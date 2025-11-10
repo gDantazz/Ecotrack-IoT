@@ -1,0 +1,2 @@
+Link do vídeo: https://youtu.be/yT3fGPyvLxQ
+Link do Broker MQTT utilizado: https://www.hivemq.com/demos/websocket-client

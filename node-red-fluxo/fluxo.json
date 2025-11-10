@@ -1,0 +1,166 @@
+[
+    {
+        "id": "1a2b3c4d5e6f7g8h",
+        "type": "tab",
+        "label": "EcoTrack IoT Flow",
+        "disabled": false,
+        "info": "Fluxo Node-RED para integração IoT → MQTT → Oracle APEX"
+    },
+    {
+        "id": "inject_simulador",
+        "type": "inject",
+        "z": "1a2b3c4d5e6f7g8h",
+        "name": "Gerar dados IoT a cada 10s",
+        "props": [],
+        "repeat": "10",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 120,
+        "wires": [
+            [
+                "func_simulador"
+            ]
+        ]
+    },
+    {
+        "id": "func_simulador",
+        "type": "function",
+        "z": "1a2b3c4d5e6f7g8h",
+        "name": "Gerar dados simulados",
+        "func": "msg.payload = {\n    deviceId: \"sensor01\",\n    temperature: (20 + Math.random() * 5).toFixed(1),\n    humidity: (50 + Math.random() * 10).toFixed(1),\n    co2: (0.3 + Math.random() * 0.2).toFixed(2),\n    timestamp: new Date().toISOString()\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 120,
+        "wires": [
+            [
+                "mqtt_out"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out",
+        "type": "mqtt out",
+        "z": "1a2b3c4d5e6f7g8h",
+        "name": "Publicar no MQTT",
+        "topic": "ecotrack/sensor01",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "broker_hivemq",
+        "x": 670,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in",
+        "type": "mqtt in",
+        "z": "1a2b3c4d5e6f7g8h",
+        "name": "Receber dados do MQTT",
+        "topic": "ecotrack/sensor01",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "broker_hivemq",
+        "nl": false,
+        "rap": false,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 240,
+        "wires": [
+            [
+                "http_post",
+                "debug_payload"
+            ]
+        ]
+    },
+    {
+        "id": "http_post",
+        "type": "http request",
+        "z": "1a2b3c4d5e6f7g8h",
+        "name": "Enviar ao Oracle APEX (POST)",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://apex.oracle.com/pls/apex/seu_usuario/iotdata/",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 490,
+        "y": 240,
+        "wires": [
+            [
+                "debug_resposta"
+            ]
+        ]
+    },
+    {
+        "id": "debug_payload",
+        "type": "debug",
+        "z": "1a2b3c4d5e6f7g8h",
+        "name": "Payload recebido",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 770,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "debug_resposta",
+        "type": "debug",
+        "z": "1a2b3c4d5e6f7g8h",
+        "name": "Resposta do APEX",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 770,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "broker_hivemq",
+        "type": "mqtt-broker",
+        "name": "HiveMQ Public Broker",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "EcoTrack_NodeRED_Client",
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": ""
+    }
+]

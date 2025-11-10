@@ -93,9 +93,10 @@ Melhorar o dashboard e visualização dos dados
 🔗 Links Importantes
 
 🧠 Broker MQTT (HiveMQ): https://www.hivemq.com/demos/websocket-client/
-💾 Repositório GitHub: [link aqui]
+💾 Repositório GitHub: https://github.com/gDantazz/Ecotrack-IoT
 🎥 Vídeo da Apresentação: https://youtu.be/yT3fGPyvLxQ
 
 🏁 Conclusão
 Mesmo sem a integração completa ao Oracle APEX, o EcoTrack demonstra com sucesso o envio e recebimento de dados IoT via MQTT, consolidando o aprendizado sobre Node-RED, brokers MQTT e comunicação entre dispositivos.
 Este protótipo serve como base sólida para as próximas sprints, nas quais serão aplicadas soluções de IA e armazenamento em nuvem.
+
